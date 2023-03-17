@@ -1,0 +1,29 @@
+{
+  "name": "meow-meow-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "prettier --write ./src && eslint --fix ./src",
+    "start": "tsc && node ./dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.15.3",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "eslint": "^8.36.0",
+    "eslint-config-prettier": "^8.7.0",
+    "prettier": "2.8.4",
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "@roziscoding/grammy-autoquote": "^1.1.2",
+    "grammy": "^1.15.3",
+    "lru-cache": "^8.0.3",
+    "openai": "^3.2.1",
+    "socks-proxy-agent": "^7.0.0"
+  }
+}
