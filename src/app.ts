@@ -43,7 +43,7 @@ bot.on('message', async (ctx) => {
   if (ctx.chat.type === 'private') {
     if (ctx.message.text?.startsWith('//system ')) {
       const session = sessionManager.getSession(ctx.message.from);
-      const message = await session?.completion(
+      const message = await session.completion(
         openai,
         ctx.message.text.slice(9),
         ChatCompletionResponseMessageRoleEnum.System,
@@ -51,12 +51,20 @@ bot.on('message', async (ctx) => {
       if (message) {
         ctx.reply(message);
       }
+    } else if (ctx.message.text?.startsWith('//revert')) {
+      const session = sessionManager.getSession(ctx.message.from);
+      const message = session.popMessage();
+      if (message) {
+        ctx.reply(`message ${message.content} reverted`);
+      } else {
+        ctx.reply(`message revert failed`);
+      }
     } else if (ctx.message.text?.startsWith('//reset')) {
       sessionManager.clearSession(ctx.message.from);
       ctx.reply('session reset');
     } else if (ctx.message.text) {
       const session = sessionManager.getSession(ctx.message.from);
-      const message = await session?.completion(openai, ctx.message.text);
+      const message = await session.completion(openai, ctx.message.text);
       if (message) {
         ctx.reply(message);
       }

@@ -19,6 +19,10 @@ export class Session {
     this.createdAt = new Date();
   }
 
+  popMessage(): ChatCompletionResponseMessage | undefined {
+    return this.messages.pop();
+  }
+
   async completion(
     openai: OpenAIApi,
     content: string,
@@ -79,12 +83,12 @@ export class SessionManager {
     },
   });
 
-  getSession(user: User): Session | undefined {
+  getSession(user: User): Session {
     if (!this.lruSessions.has(user.id)) {
       this.lruSessions.set(user.id, new Session(user));
     }
 
-    return this.lruSessions.get(user.id);
+    return this.lruSessions.get(user.id)!;
   }
 
   clearSession(user: User) {
