@@ -9,6 +9,7 @@ const requiredEnv = (key: string): string => {
 };
 
 export const TELEGRAM_BOT_TOKEN = requiredEnv('TELEGRAM_BOT_TOKEN');
-export const OPENAI_SECRET_KEY = requiredEnv('OPENAI_SECRET_KEY');
+export const OPENAI_SECRET_KEY = process.env.OPENAI_SECRET_KEY as string;
+export const RWKV_BASE_URL = process.env.RWKV_BASE_URL as string;
 
 export const SOCKS_PROXY = process.env.SOCKS_PROXY;

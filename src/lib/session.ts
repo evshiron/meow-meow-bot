@@ -7,6 +7,7 @@ import {
   OpenAIApi,
 } from 'openai';
 import { join } from 'path';
+import { RwkvApi } from './rwkvApi';
 
 const DIR_SAVES = './data/saves';
 
@@ -24,7 +25,7 @@ export class Session {
   }
 
   async completion(
-    openai: OpenAIApi,
+    api: OpenAIApi | RwkvApi,
     content: string,
     role: ChatCompletionResponseMessageRoleEnum = ChatCompletionResponseMessageRoleEnum.User,
   ) {
@@ -35,7 +36,7 @@ export class Session {
 
     if (role === ChatCompletionResponseMessageRoleEnum.User) {
       try {
-        const { data } = await openai.createChatCompletion({
+        const { data } = await api.createChatCompletion({
           model: 'gpt-3.5-turbo',
           messages: this.messages,
         });

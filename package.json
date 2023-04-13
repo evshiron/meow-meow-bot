@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@roziscoding/grammy-autoquote": "^1.1.2",
+    "axios": "^1.3.5",
     "grammy": "^1.15.3",
     "lru-cache": "^8.0.3",
     "openai": "^3.2.1",

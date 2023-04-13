@@ -9,10 +9,12 @@ import { autoQuote } from '@roziscoding/grammy-autoquote';
 
 import {
   OPENAI_SECRET_KEY,
+  RWKV_BASE_URL,
   SOCKS_PROXY,
   TELEGRAM_BOT_TOKEN,
 } from './lib/config';
 import { SessionManager } from './lib/session';
+import { RwkvApi } from './lib/rwkvApi';
 
 let agent;
 
@@ -30,11 +32,13 @@ const bot = new Bot(TELEGRAM_BOT_TOKEN, {
 
 bot.use(autoQuote);
 
-const openai = new OpenAIApi(
-  new Configuration({
-    apiKey: OPENAI_SECRET_KEY,
-  }),
-);
+// const api = new OpenAIApi(
+//   new Configuration({
+//     apiKey: OPENAI_SECRET_KEY,
+//   }),
+// );
+
+const api = new RwkvApi(RWKV_BASE_URL);
 
 const sessionManager = new SessionManager();
 
@@ -44,7 +48,7 @@ bot.on('message', async (ctx) => {
     if (ctx.message.text?.startsWith('//system ')) {
       const session = sessionManager.getSession(ctx.message.from);
       const message = await session.completion(
-        openai,
+        api,
         ctx.message.text.slice(9),
         ChatCompletionResponseMessageRoleEnum.System,
       );
@@ -64,7 +68,7 @@ bot.on('message', async (ctx) => {
       ctx.reply('session reset');
     } else if (ctx.message.text) {
       const session = sessionManager.getSession(ctx.message.from);
-      const message = await session.completion(openai, ctx.message.text);
+      const message = await session.completion(api, ctx.message.text);
       if (message) {
         ctx.reply(message);
       }
@@ -77,7 +81,7 @@ bot.on('message', async (ctx) => {
   ) {
     const session = sessionManager.getSession(ctx.message.from);
     const message = await session?.completion(
-      openai,
+      api,
       ctx.message.text.replace(`@${bot.botInfo.username}`, ''),
     );
     if (message) {
